@@ -1,0 +1,4 @@
+# composer vendor dir
+/vendor
+# phpstorm project files
+.idea
