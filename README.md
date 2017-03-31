@@ -4,9 +4,9 @@
 
 天眼查爬虫,使用guzzle和php-phantomjs
 
-#本项目仅作为学习交流使用，遵循apache2开源协议，请勿用于商业
+# 本项目仅作为学习交流使用，遵循apache2开源协议，请勿用于商业
 
-##安装
+## 安装
 
 请先安装composer
 
@@ -17,7 +17,7 @@ composer install
 sudo apt-get install phantomjs
 ```
 
-##使用
+## 使用
 
 ```
 基础信息获取
