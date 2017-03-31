@@ -14,7 +14,7 @@ $id = getCompanyId($company_name);
 if ($id) {
     $info = getInfo($id);
     $info['company_id'] = $id;
-    var_dump($info);
+//    var_dump($info);
     echo json_encode($info);
 } else {
     echo 'false';
