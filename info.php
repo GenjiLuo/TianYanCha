@@ -14,7 +14,7 @@ $id = getCompanyId($company_name);
 if ($id) {
     $info = getInfo($id);
     $info['company_id'] = $id;
-//    var_dump($info);
+    var_dump($info);
     echo json_encode($info);
 } else {
     echo 'false';
@@ -22,8 +22,8 @@ if ($id) {
 
 function getCompanyId($company_name)
 {
-//    $url='http://www.tianyancha.com/search?key='.urlencode($company_name).'&checkFrom=searchBox';
-    $url = 'http://www.tianyancha.com/search?key=%E5%8C%97%E4%BA%AC%E9%87%91%E5%A0%A4%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&checkFrom=searchBox';
+    $url = 'http://www.tianyancha.com/search?key=' . urlencode($company_name) . '&checkFrom=searchBox';
+//    $url = 'http://www.tianyancha.com/search?key=%E5%8C%97%E4%BA%AC%E9%87%91%E5%A0%A4%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&checkFrom=searchBox';
     $content = getContent($url);
     preg_match('/http\:\/\/www\.tianyancha\.com\/company\/\d{1,10}/', $content, $temp);
 //todo 需要模糊搜索的话，要取出所有公司id
@@ -45,9 +45,16 @@ function getInfo($company_id)
             $message[$type] = $value;
         }
         preg_match('/fromTime" class="ng-binding ng-scope">.{1,50}<\/span>/', $content, $time);
-        $message['营业期限'] = trim($time[0], 'fromTime" class="ng-binding ng-scope">,</span>');
-        preg_match('/splitNum" class="ng-binding ng-scope">.{1,400}<\/span>/', $content, $range);
-        $message['经营范围'] = trim($range[0], 'fromTime" class="ng-binding ng-scope">,</span>');
+        $message['营业期限：'] = trim($time[0], 'fromTime" class="ng-binding ng-scope">,</span>');
+        //长度有长有短。。还是做个兼容
+        preg_match('/splitNum" class="ng-binding ng-scope">.{1,200}<\/span>/', $content, $range);
+        if (!isset($range[0])) {
+            preg_match('/splitNum" class="ng-binding ng-scope">.{1,350}<\/span>/', $content, $range);
+        }
+        if (!isset($range[0])) {
+            preg_match('/splitNum" class="ng-binding ng-scope">.{1,500}<\/span>/', $content, $range);
+        }
+        $message['经营范围：'] = trim($range[0], 'tNum" class="ng-binding ng-scope">,</span>');
     }
     return $message;
 }
